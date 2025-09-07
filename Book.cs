@@ -8,7 +8,7 @@ namespace ConsoleApp1
 {
     public class Book
     {
-        private string title;
+        public string title;
         private string description;
         private string author;
         private DateOnly creationDate;

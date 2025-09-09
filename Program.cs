@@ -81,18 +81,24 @@ while (true)
             break;
 
         case "4":
-            Console.Write("Введіть назву книги для зміни: ");
-            string modifyTitle = Console.ReadLine();
-            var bookToModify = books.FirstOrDefault(b => b.title.Equals(modifyTitle, StringComparison.OrdinalIgnoreCase));
-            if (bookToModify != null)
+            Console.Write("Введіть порядковий номер книги: ");
+            int indexBook;
+            while (!int.TryParse(Console.ReadLine(), out indexBook) || indexBook <= 0 || indexBook > books.Count)
             {
-                Console.WriteLine("1 - Змінити ціну");
-                Console.WriteLine("2 - Збільшити кількість");
-                Console.WriteLine("3 - Зменшити кількість");
-                Console.Write("Виберіть опцію: ");
-                string action = Console.ReadLine();
+                Console.Write("Неправильний номер. Введіть ще раз: ");
+            }
+            var bookToModify = books[indexBook - 1];
 
-                switch (action)
+            Console.WriteLine("\n=== Поточна книга ===");
+            printBooks([bookToModify]);
+
+            Console.WriteLine("1 - Змінити ціну");
+            Console.WriteLine("2 - Збільшити кількість");
+            Console.WriteLine("3 - Зменшити кількість");
+            Console.Write("Виберіть опцію: ");
+            string action = Console.ReadLine();
+
+            switch (action)
                 {
                     case "1":
                         Console.Write("Введіть нову ціну: ");
@@ -110,23 +116,43 @@ while (true)
                     default:
                         Console.WriteLine("Неправильна опція.");
                         break;
-                }
             }
-            else
-                Console.WriteLine("Книгу не знайдено.");
             break;
 
         case "5":
-            Console.Write("Введіть назву для видалення: ");
-            string deleteTitle = Console.ReadLine();
-            var bookToDelete = books.FirstOrDefault(b => b.title.Equals(deleteTitle, StringComparison.OrdinalIgnoreCase));
-            if (bookToDelete != null)
+            string choiceDelete;
+            Console.WriteLine("Оберіть характеристику для видалення: ");
+            do
             {
-                books.Remove(bookToDelete);
+                Console.WriteLine("1 - Порядковий номер");
+                Console.WriteLine("2 - Назва");
+                Console.Write("Ваш вибір: ");
+                choiceDelete = Console.ReadLine();
+                if (choiceDelete != "1" && choiceDelete != "2")
+                {
+                    Console.WriteLine("Неправильний вибір.");
+                }
+            } while (choiceDelete != "1" && choiceDelete != "2");
+
+            if (choiceDelete == "1")
+            {
+                printBooks(books);
+                int index;
+                Console.Write("Введіть порядковий номер книги для видалення: ");
+                while (!int.TryParse(Console.ReadLine(), out index) || index <= 0 || index > books.Count)
+                {
+                    Console.Write("Неправильний номер. Введіть ще раз: ");
+                }
+                books.RemoveAt(index - 1);
                 Console.WriteLine("Книгу видалено.");
             }
             else
-                Console.WriteLine("Книгу не знайдено.");
+            {
+                Console.Write("Введіть значення для видалення: ");
+                string deleteValue = Console.ReadLine();
+                int removed = books.RemoveAll(b => b.title.Equals(deleteValue, StringComparison.OrdinalIgnoreCase));
+                Console.WriteLine(removed > 0 ? $"Видалено {removed} книг(и)." : "Книг не знайдено.");
+            }
             break;
 
         case "0":
@@ -207,7 +233,7 @@ void printBooks(List<Book> books)
         return;
     }
 
-    Console.WriteLine("№ | Назва                | Автор               | Дата       | Стор. |    Ціна   | К-сть | Жанр       | Інші видання");
+    Console.WriteLine("№ | Назва                | Автор               | Дата       | Стор. |    Ціна (USD)  | К-сть | Жанр       | Інші видання");
     Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
 
     int index = 1;

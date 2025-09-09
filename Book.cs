@@ -9,8 +9,7 @@ namespace ConsoleApp1
     public class Book
     {
         public string title;
-        private string description;
-        private string author;
+        public string author;
         private DateOnly creationDate;
         private int countOfPages;
         private decimal price;
@@ -19,10 +18,9 @@ namespace ConsoleApp1
 
         public Genre genre;
 
-        public Book(string title, string description, string author, DateOnly creationDate, int countOfPages, decimal price, int quantity, Genre genre)
+        public Book(string title, string author, DateOnly creationDate, int countOfPages, decimal price, int quantity, Genre genre)
         {
             this.title = title;
-            this.description = description;
             this.author = author;
             this.creationDate = creationDate;
             this.countOfPages = countOfPages;
@@ -42,18 +40,18 @@ namespace ConsoleApp1
             if (newPrice >= 0)
             {
                 price = newPrice;
-                Console.WriteLine($"Price of \"{title}\" updated to {price} USD.");
+                Console.WriteLine($"Ціну книги \"{title}\" змінено на {price} USD.");
             }
             else
             {
-                Console.WriteLine("Price cannot be negative.");
+                Console.WriteLine("Ціна не може бути від’ємною.");
             }
         }
 
         public void IncreaseQuantity()
         {
             quantity++;
-            Console.WriteLine($"Quantity of \"{title}\" increased. Now: {quantity}.");
+            Console.WriteLine($"Кількість примірників \"{title}\" збільшено. Тепер: {quantity}.");
         }
 
         public void DecreaseQuantity()
@@ -61,27 +59,17 @@ namespace ConsoleApp1
             if (quantity > 0)
             {
                 quantity--;
-                Console.WriteLine($"Quantity of \"{title}\" decreased. Now: {quantity}.");
+                Console.WriteLine($"Кількість примірників \"{title}\" зменшено. Тепер: {quantity}.");
             }
             else
             {
-                Console.WriteLine($"Cannot decrease. \"{title}\" is out of stock.");
+                Console.WriteLine($"Не можна зменшити. \"{title}\" відсутня на складі.");
             }
         }
 
         public override string ToString()
         {
-            return $"=== Book Information ===\n" +
-                   $"Title: {title}\n" +
-                   $"Author: {author}\n" +
-                   $"Description: {description}\n" +
-                   $"First publication: {creationDate.ToString("dd.MM.yyyy")}\n" +
-                   $"Pages: {countOfPages}\n" +
-                   $"Price: {price} USD\n" +
-                   $"Quantity: {quantity}\n" +
-                   $"Genre: {genre}\n" +
-                   $"Other editions: {(datesOfPublication.Count > 1 ? string.Join(", ", datesOfPublication.Skip(1).Select(d => d.ToString("dd.MM.yyyy"))) : "[]")}\n" +
-                   $"=========================";
+            return $"{title,-20} | {author,-18} | {creationDate:dd.MM.yyyy} | {countOfPages,5} | {price,8} USD | {quantity,5} | {genre,-10} | {(datesOfPublication.Count > 1 ? string.Join(", ", datesOfPublication.Skip(1).Select(d => d.ToString("dd.MM.yyyy"))) : "[]")}";
         }
     }
 }

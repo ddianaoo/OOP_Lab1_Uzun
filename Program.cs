@@ -95,6 +95,7 @@ while (true)
             Console.WriteLine("1 - Змінити ціну");
             Console.WriteLine("2 - Збільшити кількість");
             Console.WriteLine("3 - Зменшити кількість");
+            Console.WriteLine("4 - Порівняти з іншою книгою");
             Console.Write("Виберіть опцію: ");
             string action = Console.ReadLine();
 
@@ -113,7 +114,24 @@ while (true)
                     case "3":
                         bookToModify.DecreaseQuantity();
                         break;
-                    default:
+                    case "4":
+                        Console.Write("Введіть порядковий номер книги: ");
+                        int indexBook3;
+                        while (!int.TryParse(Console.ReadLine(), out indexBook3) || indexBook3 <= 0 || indexBook3 > books.Count)
+                        {
+                            Console.Write("Неправильний номер. Введіть ще раз: ");
+                        }
+                        var bookToCompare = books[indexBook3 - 1];
+                        int result = bookToModify.CompareTo(bookToCompare);
+                        if (result < 0)
+                            Console.WriteLine($"{bookToModify.title} вийшла раніше за {bookToCompare.title}");
+                        else if (result > 0)
+                            Console.WriteLine($"{bookToModify.title} вийшла пізніше за {bookToCompare.title}");
+                        else
+                            Console.WriteLine($"{bookToModify.title} та {bookToCompare.title} вийшли в один день");
+
+                    break;
+                default:
                         Console.WriteLine("Неправильна опція.");
                         break;
             }
@@ -233,7 +251,7 @@ void printBooks(List<Book> books)
         return;
     }
 
-    Console.WriteLine("№ | Назва                | Автор               | Дата       | Стор. |    Ціна (USD)  | К-сть | Жанр       | Інші видання");
+    Console.WriteLine("№ | Назва                | Автор               | Дата       | Стор. |    Ціна (USD)  | К-сть | Жанр    ");
     Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
 
     int index = 1;

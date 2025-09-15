@@ -14,8 +14,6 @@ namespace ConsoleApp1
         private int countOfPages;
         private decimal price;
         private int quantity;
-        private List<DateOnly> datesOfPublication;
-
         public Genre genre;
 
         public Book(string title, string author, DateOnly creationDate, int countOfPages, decimal price, int quantity, Genre genre)
@@ -27,49 +25,40 @@ namespace ConsoleApp1
             this.price = price;
             this.quantity = quantity;
             this.genre = genre;
-            this.datesOfPublication = new List<DateOnly> { creationDate };
         }
 
-        public void AddPublicationDate(DateOnly newDate)
-        {
-            datesOfPublication.Add(newDate);
-        }
-
-        public void ChangePrice(decimal newPrice)
+        public decimal ChangePrice(decimal newPrice)
         {
             if (newPrice >= 0)
             {
                 price = newPrice;
-                Console.WriteLine($"Ціну книги \"{title}\" змінено на {price} USD.");
             }
-            else
-            {
-                Console.WriteLine("Ціна не може бути від’ємною.");
-            }
+            return price;
         }
 
-        public void IncreaseQuantity()
+        public int IncreaseQuantity()
         {
             quantity++;
-            Console.WriteLine($"Кількість примірників \"{title}\" збільшено. Тепер: {quantity}.");
+            return quantity;
         }
 
-        public void DecreaseQuantity()
+        public int DecreaseQuantity()
         {
             if (quantity > 0)
             {
                 quantity--;
-                Console.WriteLine($"Кількість примірників \"{title}\" зменшено. Тепер: {quantity}.");
             }
-            else
-            {
-                Console.WriteLine($"Не можна зменшити. \"{title}\" відсутня на складі.");
-            }
+            return quantity;
+        }
+        public int CompareTo(Book? other)
+        {
+            if (other == null) return 1;
+            return this.creationDate.CompareTo(other.creationDate);
         }
 
         public override string ToString()
         {
-            return $"{title,-20} | {author,-18} | {creationDate:dd.MM.yyyy} | {countOfPages,5} | {price,8} USD | {quantity,5} | {genre,-10} | {(datesOfPublication.Count > 1 ? string.Join(", ", datesOfPublication.Skip(1).Select(d => d.ToString("dd.MM.yyyy"))) : "[]")}";
+            return $"{title,-20} | {author,-18} | {creationDate:dd.MM.yyyy} | {countOfPages,5} | {price,8} USD | {quantity,5} | {genre,-10}";
         }
     }
 }

@@ -1,4 +1,7 @@
 ﻿using ConsoleApp1;
+using System.Text.RegularExpressions;
+
+
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 Console.Write("Введіть максимальну кількість книг (N > 0): ");
@@ -196,9 +199,11 @@ Book CreateBookFromConsole()
     string author;
     do
     {
-        Console.Write("Введіть автора: ");
+        Console.Write("Введіть автора (Прізвище Ім’я): ");
         author = Console.ReadLine();
-    } while (string.IsNullOrWhiteSpace(author));
+    }
+    while (string.IsNullOrWhiteSpace(author)
+           || !Regex.IsMatch(author, @"^[A-ZА-ЯЇІЄҐ][a-zа-яїієґ]* [A-ZА-ЯЇІЄҐ][a-zа-яїієґ]*$"));
 
     Console.Write("Введіть дату створення (yyyy-mm-dd): ");
     DateOnly creationDate;
@@ -207,16 +212,16 @@ Book CreateBookFromConsole()
         Console.Write("Неправильна дата. Введіть ще раз (yyyy-mm-dd, не пізніше сьогодні): ");
     }
 
-    Console.Write("Введіть кількість сторінок: ");
+    Console.Write("Введіть кількість сторінок (1–10000): ");
     int pages;
-    while (!int.TryParse(Console.ReadLine(), out pages) || pages <= 0)
+    while (!int.TryParse(Console.ReadLine(), out pages) || pages <= 0 || pages > 10000)
     {
-        Console.Write("Неправильне число. Введіть ще раз: ");
+        Console.Write("Неправильне число. Введіть ще раз (1–10000): ");
     }
 
     Console.Write("Введіть ціну: ");
     decimal price;
-    while (!decimal.TryParse(Console.ReadLine(), out price) || price < 0)
+    while (!decimal.TryParse(Console.ReadLine(), out price) || price <= 0)
     {
         Console.Write("Неправильна ціна. Введіть ще раз: ");
     }
